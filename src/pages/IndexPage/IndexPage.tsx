@@ -163,32 +163,33 @@ export const IndexPage = () => {
               render={({ field }) => (
                 <Combobox store={combobox}>
                   <Combobox.Target>
-                    <Select
-                      readOnly
-                      data={[
-                        {
-                          value:
-                            state.mode === 'approximate'
+                    <Stack gap={4}>
+                      <Text inline c='var(--text-secondary)' size='14'>
+                        Размер посылки
+                      </Text>
+                      <Flex
+                        style={{
+                          border: '1px solid var(--border-light)',
+                          borderRadius: 4
+                        }}
+                        align='center'
+                        justify='space-between'
+                        pl={8}
+                        pr={4}
+                        py={6}
+                        onClick={() => combobox.openDropdown()}
+                      >
+                        <Flex align='center' gap={8}>
+                          <IconMail size={20} color='var(--indicator-medium)' stroke={2} />
+                          <Text inline c='var(--text-secondary)' size='14'>
+                            {state.mode === 'approximate'
                               ? field.value?.name
-                              : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`,
-                          label:
-                            state.mode === 'approximate'
-                              ? field.value?.name
-                              : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`
-                        }
-                      ]}
-                      value={
-                        state.mode === 'approximate'
-                          ? field.value?.name
-                          : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`
-                      }
-                      label='Размер посылки'
-                      leftSection={
-                        <IconMail size={20} color='var(--indicator-medium)' stroke={2} />
-                      }
-                      onClick={() => combobox.openDropdown()}
-                      rightSection={<IconChevronDown color='var(--indicator-medium)' stroke={1} />}
-                    />
+                              : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`}
+                          </Text>
+                        </Flex>
+                        <IconChevronDown color='var(--indicator-medium)' stroke={1} />
+                      </Flex>
+                    </Stack>
                   </Combobox.Target>
 
                   <Combobox.Dropdown
