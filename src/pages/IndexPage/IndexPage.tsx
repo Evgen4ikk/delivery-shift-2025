@@ -165,16 +165,28 @@ export const IndexPage = () => {
                   <Combobox.Target>
                     <Select
                       readOnly
+                      data={[
+                        {
+                          value:
+                            state.mode === 'approximate'
+                              ? field.value?.name
+                              : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`,
+                          label:
+                            state.mode === 'approximate'
+                              ? field.value?.name
+                              : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`
+                        }
+                      ]}
+                      value={
+                        state.mode === 'approximate'
+                          ? field.value?.name
+                          : `${field.value?.length} x ${field.value?.width} x ${field.value?.height} см`
+                      }
                       label='Размер посылки'
                       leftSection={
                         <IconMail size={20} color='var(--indicator-medium)' stroke={2} />
                       }
                       onClick={() => combobox.openDropdown()}
-                      placeholder={
-                        state.mode === 'approximate'
-                          ? field.value?.name
-                          : `${field.value?.width} x ${field.value?.height} x ${field.value?.length} см`
-                      }
                       rightSection={<IconChevronDown color='var(--indicator-medium)' stroke={1} />}
                     />
                   </Combobox.Target>
