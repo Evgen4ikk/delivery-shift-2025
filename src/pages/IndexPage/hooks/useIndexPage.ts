@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useCalcDeliveryMutation } from '@/shared/api/hooks/useCalcDeliveryMutation';
+import { useOrder } from '@/shared/contexts/order';
 
 import type { CalcDeliverySchema } from '../consts/calcDeliverySchema';
 
@@ -23,6 +24,7 @@ export const useIndexPage = () => {
   const getPointsQuery = useGetPointsQuery();
   const getPackagesQuery = useGetPackagesQuery();
   const calcDeliveryMutation = useCalcDeliveryMutation();
+  const order = useOrder();
 
   const points = getPointsQuery.data ? getPointsQuery.data.data.points : [];
   const packages = getPackagesQuery.data ? getPackagesQuery.data.data.packages : [];
@@ -55,22 +57,27 @@ export const useIndexPage = () => {
       return;
     }
 
+    order.orderFunctions.setSenderPoint(senderPoint);
+    order.orderFunctions.setReceiverPoint(receiverPoint);
+
     const params = {
-      receiverPoint: senderPoint,
-      senderPoint: receiverPoint,
+      senderPoint,
+      receiverPoint,
       package: data.package
     };
 
-    await calcDeliveryMutation.mutateAsync(
-      {
-        params
-      },
-      {
-        onSuccess: () => {
-          navigate({ to: '/delivery' });
-        }
+    const calcDeliveryMutationResponse = await calcDeliveryMutation.mutateAsync({
+      params
+    });
+
+    if (!calcDeliveryMutationResponse.data.success) return;
+
+    navigate({
+      to: '/order',
+      search: {
+        options: JSON.stringify(calcDeliveryMutationResponse.data.options)
       }
-    );
+    });
   });
 
   return {

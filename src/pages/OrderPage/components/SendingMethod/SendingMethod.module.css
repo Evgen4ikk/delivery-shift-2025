@@ -1,0 +1,48 @@
+.optionItem {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 24px;
+  padding: 16px;
+  border: 1px solid var(--border-extraLight);
+
+  .iconWrapper {
+    border-radius: 100%;
+  }
+
+  .optionName,
+  .optionPrice,
+  .dayInfo {
+    transition: color 0.2s ease-in-out;
+  }
+
+  &:hover,
+  &.selected {
+    background-color: var(--bg-brand);
+
+    .optionName,
+    .optionPrice,
+    .dayInfo {
+      color: white;
+    }
+
+    .iconWrapper {
+      background-color: white;
+
+      svg {
+        stroke: var(--bg-brand);
+      }
+    }
+  }
+
+  .optionName {
+    color: var(--text-tertiary);
+  }
+
+  .optionPrice {
+    color: var(--text-primary);
+  }
+
+  .dayInfo {
+    color: var(--text-tertiary);
+  }
+}

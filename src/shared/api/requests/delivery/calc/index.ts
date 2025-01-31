@@ -15,7 +15,7 @@ export interface CalcDeliveryParams {
 export type CalcDeliveryConfig = RequestConfig<CalcDeliveryParams>;
 
 interface CalcDeliveryResponse extends BaseResponse {
-  options: Options;
+  options: Options[];
 }
 
 export const calcDelivery = async ({ params, config }: CalcDeliveryConfig) =>
