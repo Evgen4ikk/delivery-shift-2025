@@ -1,15 +1,26 @@
-import * as TanstackRouter from '@tanstack/react-router'
+import * as TanstackRouter from '@tanstack/react-router';
 
-import { routeTree } from './constants/routeTree.gen'
+import { useAuth } from '@/shared/contexts/auth';
 
-const router = TanstackRouter.createRouter({ routeTree })
+import { routeTree } from './constants/routeTree.gen';
+
+const router = TanstackRouter.createRouter({
+  routeTree,
+  context: {
+    isAuth: false
+  }
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
-export const RouterProvider = () => (
-  <TanstackRouter.RouterProvider router={router} />
-)
+export const RouterProvider = () => {
+  const auth = useAuth();
+
+  return (
+    <TanstackRouter.RouterProvider context={{ isAuth: auth.authState.isAuth }} router={router} />
+  );
+};

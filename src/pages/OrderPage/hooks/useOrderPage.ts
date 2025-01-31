@@ -16,20 +16,34 @@ import type { UserOrderSchemeType } from '../constants/UserOrderScheme';
 import { AddressOrderScheme } from '../constants/AddressOrderSchema';
 import { UserOrderScheme } from '../constants/UserOrderScheme';
 
-const routeApi = getRouteApi('/order');
+const routeApi = getRouteApi('/order/');
 
 export const useOrderPage = () => {
   const search: { options?: string } = routeApi.useSearch();
+  const navigate = routeApi.useNavigate();
   const parsedOptions: Options[] = search.options ? JSON.parse(search.options) : null;
 
   const createOrderMutation = useCreateOrderMutation();
   const { orderState, orderFunctions } = useOrder();
 
   const [step, setStep] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const nextStep = () => flushSync(() => setStep((prev) => prev + 1));
+  const nextStep = () => {
+    flushSync(() => {
+      if (isEditing) {
+        setStep(7);
+        setIsEditing(false);
+      }
+      !isEditing && setStep((prev) => prev + 1);
+    });
+  };
 
   const prevStep = () => flushSync(() => setStep((prev) => prev - 1));
+
+  const setStepSync = (step: number) => {
+    flushSync(() => setStep(step));
+  };
 
   const userOrderForm = useForm<UserOrderSchemeType>({
     resolver: zodResolver(UserOrderScheme),
@@ -84,7 +98,7 @@ export const useOrderPage = () => {
     )
       return;
 
-    await createOrderMutation.mutateAsync({
+    const createOrderResponse = await createOrderMutation.mutateAsync({
       params: {
         option: orderState.option,
         payer: orderState.payer,
@@ -96,6 +110,15 @@ export const useOrderPage = () => {
         senderPoint: orderState.senderPoint
       }
     });
+
+    if (createOrderResponse.data.order) {
+      navigate({
+        to: '/order/send',
+        search: {
+          order: JSON.stringify(createOrderResponse.data.order)
+        }
+      });
+    }
   };
 
   return {
@@ -108,7 +131,9 @@ export const useOrderPage = () => {
       nextStep,
       prevStep,
       orderFunctions,
-      createOrder
+      createOrder,
+      setStepSync,
+      setIsEditing
     },
     form: {
       state: {

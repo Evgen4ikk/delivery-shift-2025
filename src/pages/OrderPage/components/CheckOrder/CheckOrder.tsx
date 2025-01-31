@@ -7,6 +7,7 @@ import type { useOrderPageProps } from '../../types';
 
 interface OrderSection {
   fields: { label: string; value: string }[];
+  step: number;
   title: string;
 }
 
@@ -20,7 +21,8 @@ export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
           value: `${state.orderState.receiver.firstname} ${state.orderState.receiver.lastname} ${state.orderState.receiver.middlename}`
         },
         { label: 'Телефон', value: formatPhoneNumber(state.orderState.receiver.phone) }
-      ]
+      ],
+      step: 2
     },
     state.orderState.sender && {
       title: 'Отправитель',
@@ -30,7 +32,8 @@ export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
           value: `${state.orderState.sender.firstname} ${state.orderState.sender.lastname} ${state.orderState.sender.middlename}`
         },
         { label: 'Телефон', value: formatPhoneNumber(state.orderState.sender.phone) }
-      ]
+      ],
+      step: 3
     },
     state.orderState.senderAddress && {
       title: 'Откуда забрать',
@@ -40,7 +43,8 @@ export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
           value: `${state.orderState.senderAddress.street} ${state.orderState.senderAddress.house}`
         },
         { label: 'Заметка', value: state.orderState.senderAddress.comment || '' }
-      ]
+      ],
+      step: 4
     },
     state.orderState.receiverAddress && {
       title: 'Куда доставить',
@@ -50,13 +54,19 @@ export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
           value: `${state.orderState.receiverAddress.street} ${state.orderState.receiverAddress.house}`
         },
         { label: 'Заметка', value: state.orderState.receiverAddress.comment || '' }
-      ]
+      ],
+      step: 5
     }
   ].filter(Boolean) as OrderSection[];
 
+  const returnStep = (step: number) => () => {
+    functions.setStepSync(step);
+    functions.setIsEditing(true);
+  };
+
   return (
     <Stack>
-      {orderData.map(({ title, fields }, index) => (
+      {orderData.map(({ title, fields, step }, index) => (
         <Flex
           key={index}
           align='center'
@@ -83,7 +93,12 @@ export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
             </Stack>
           ))}
 
-          <IconPencil size={24} color='var(--indicator-medium)' />
+          <IconPencil
+            size={24}
+            style={{ cursor: 'pointer' }}
+            color='var(--indicator-medium)'
+            onClick={returnStep(step)}
+          />
         </Flex>
       ))}
       {state.orderState.option && (
