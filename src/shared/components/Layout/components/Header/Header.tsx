@@ -5,7 +5,7 @@ export const Header = () => {
   return (
     <Flex align='center' justify='space-between' py='24'>
       <Link to='/'>
-        <Image height={32} src='/img/logo.png' w='auto' />
+        <Image src='/svg/logo.svg' />
       </Link>
 
       <Text fw={500} size='md'>
