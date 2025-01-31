@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AUTH_TOKEN } from '../consts/localstorage';
+import { LOCAL_STORAGE_AUTH_TOKEN } from '../consts/localstorage';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,7 +11,7 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (config.headers) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem(AUTH_TOKEN)}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN)}`;
   }
   return config;
 });

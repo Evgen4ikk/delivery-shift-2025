@@ -5,7 +5,6 @@ import {
   Flex,
   Image,
   Input,
-  Loader,
   SegmentedControl,
   Select,
   Stack,
@@ -15,51 +14,20 @@ import {
 import { IconChevronDown, IconLocation, IconMail, IconMapPin } from '@tabler/icons-react';
 import { Controller } from 'react-hook-form';
 
+import { Loading } from './components/Loading';
 import { useIndexPage } from './hooks/useIndexPage';
 
 const PACKAGE_IMAGE: Record<string, string> = {
-  '1': '/img/envelope.png',
-  '2': '/img/carton_XS.png',
-  '3': '/img/carton_S.png',
-  '4': '/img/carton_M.png'
+  '1': '/svg/envelope.svg',
+  '2': '/svg/carton_XS.svg',
+  '3': '/svg/carton_S.svg',
+  '4': '/svg/carton_M.svg'
 };
 
 export const IndexPage = () => {
   const { combobox, state, functions, form } = useIndexPage();
 
-  if (state.loading.getSelectItems) {
-    return (
-      <Box bg='var(--bg-secondary)' h='calc(100vh - 80px)'>
-        <Flex
-          align='center'
-          left='50%'
-          style={{ transform: 'translate(-50%, -50%)' }}
-          pos='absolute'
-          top='50%'
-        >
-          <Flex gap={40} direction='column'>
-            <Stack gap={16} w={567}>
-              <Title c='var(--text-primary)' fw={700} maw={430} size='48'>
-                Мы доставим ваш заказ
-              </Title>
-              <Text inline c='var(--text-tertiary)' fw={300} size='28'>
-                Отправляйте посылки <br /> в приложении Шифт Delivery
-              </Text>
-            </Stack>
-            <Flex align='center' bg='white' gap={16} maw={380} p={16} style={{ borderRadius: 16 }}>
-              <Image src='/img/box.png' />
-              <Image src='/img/qr.png' />
-              <Text c='var(--text-tertiary)'>Наведите камеру телефона на QR‑код</Text>
-            </Flex>
-          </Flex>
-
-          <Flex align='center' justify='center' w={500}>
-            <Loader color='var(--bg-brand)' />
-          </Flex>
-        </Flex>
-      </Box>
-    );
-  }
+  if (state.loading.getSelectItems) return <Loading />;
 
   return (
     <Box bg='var(--bg-secondary)' h='calc(100vh - 80px)'>
@@ -80,7 +48,7 @@ export const IndexPage = () => {
             </Text>
           </Stack>
           <Flex align='center' bg='white' gap={16} maw={380} p={16} style={{ borderRadius: 16 }}>
-            <Image src='/img/box.png' />
+            <Image src='/svg/box.svg' />
             <Image src='/img/qr.png' />
             <Text c='var(--text-tertiary)'>Наведите камеру телефона на QR‑код</Text>
           </Flex>
@@ -111,15 +79,16 @@ export const IndexPage = () => {
               />
 
               <Flex gap={8}>
-                {['Санкт-Петербург', 'Новосибирск', 'Томск'].map((city, index) => (
+                {state?.points?.slice(0, 3).map((point, index) => (
                   <Text
                     inline
                     key={index}
                     c='var(--text-tertiary)'
                     size='14'
                     style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                    onClick={() => form.setValue('receiverPoint', point.name)}
                   >
-                    {city}
+                    {point.name}
                   </Text>
                 ))}
               </Flex>
@@ -146,15 +115,16 @@ export const IndexPage = () => {
               />
 
               <Flex gap={8}>
-                {['Санкт-Петербург', 'Новосибирск', 'Томск'].map((city, index) => (
+                {state?.points?.slice(0, 3).map((point, index) => (
                   <Text
                     inline
                     key={index}
                     c='var(--text-tertiary)'
                     size='14'
                     style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                    onClick={() => form.setValue('senderPoint', point.name)}
                   >
-                    {city}
+                    {point.name}
                   </Text>
                 ))}
               </Flex>
@@ -210,7 +180,7 @@ export const IndexPage = () => {
                         onChange={functions.setMode}
                       />
 
-                      {state.mode === 'approximate' ? (
+                      {state.mode === 'approximate' && (
                         <Stack bg='white' gap={4} p={8} style={{ borderRadius: 8 }}>
                           {state.packages.map((item) => (
                             <Combobox.Option
@@ -240,7 +210,8 @@ export const IndexPage = () => {
                             </Combobox.Option>
                           ))}
                         </Stack>
-                      ) : (
+                      )}
+                      {state.mode === 'exact' && (
                         <Stack bg='white' gap={16} px={16} py={8} style={{ borderRadius: 8 }}>
                           <Flex align='center' gap={16} justify={'space-between'}>
                             <Text c='var(--text-secondary)'>Длина</Text>

@@ -8,13 +8,11 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
-  return (
-    <AppShell header={{ height: 80 }}>
-      <AppShell.Header px={240}>
-        <Header />
-      </AppShell.Header>
-      <AppShell.Main>{children}</AppShell.Main>
-    </AppShell>
-  );
-};
+export const Layout = ({ children }: LayoutProps) => (
+  <AppShell header={{ height: 80 }}>
+    <AppShell.Header px={240}>
+      <Header />
+    </AppShell.Header>
+    <AppShell.Main>{children}</AppShell.Main>
+  </AppShell>
+);

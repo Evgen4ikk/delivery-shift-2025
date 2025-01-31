@@ -31,6 +31,6 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "@types/global.d.ts", "@types/api.d.ts"],
+  "include": ["src", "@types/global.d.ts", "src/shared/api/types/api.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

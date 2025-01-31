@@ -22,7 +22,7 @@ export const useIndexPage = () => {
 
   const getPointsQuery = useGetPointsQuery();
   const getPackagesQuery = useGetPackagesQuery();
-  const calcDelivery = useCalcDeliveryMutation();
+  const calcDeliveryMutation = useCalcDeliveryMutation();
 
   const points = getPointsQuery.data ? getPointsQuery.data.data.points : [];
   const packages = getPackagesQuery.data ? getPackagesQuery.data.data.packages : [];
@@ -47,7 +47,7 @@ export const useIndexPage = () => {
     }
   }, [points, packages]);
 
-  const onSubmit = form.handleSubmit(async (data: CalcDeliverySchema) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     const senderPoint = points.find((point) => point.name === data.senderPoint);
     const receiverPoint = points.find((point) => point.name === data.receiverPoint);
 
@@ -61,7 +61,7 @@ export const useIndexPage = () => {
       package: data.package
     };
 
-    await calcDelivery.mutateAsync(
+    await calcDeliveryMutation.mutateAsync(
       {
         params
       },
