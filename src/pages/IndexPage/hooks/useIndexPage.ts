@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useCalcDeliveryMutation } from '@/shared/api/hooks/useCalcDeliveryMutation';
+import { useOrder } from '@/shared/contexts/order';
 
 import type { CalcDeliverySchema } from '../consts/calcDeliverySchema';
 
@@ -23,6 +24,7 @@ export const useIndexPage = () => {
   const getPointsQuery = useGetPointsQuery();
   const getPackagesQuery = useGetPackagesQuery();
   const calcDelivery = useCalcDeliveryMutation();
+  const { orderFunctions } = useOrder();
 
   const points = getPointsQuery.data ? getPointsQuery.data.data.points : [];
   const packages = getPackagesQuery.data ? getPackagesQuery.data.data.packages : [];
@@ -55,22 +57,27 @@ export const useIndexPage = () => {
       return;
     }
 
+    orderFunctions.setSenderPoint(senderPoint);
+    orderFunctions.setReceiverPoint(receiverPoint);
+
     const params = {
-      receiverPoint: senderPoint,
-      senderPoint: receiverPoint,
+      senderPoint,
+      receiverPoint,
       package: data.package
     };
 
-    await calcDelivery.mutateAsync(
-      {
-        params
-      },
-      {
-        onSuccess: () => {
-          navigate({ to: '/delivery' });
+    const response = await calcDelivery.mutateAsync({
+      params
+    });
+
+    if (response.data.options) {
+      navigate({
+        to: '/order',
+        search: {
+          options: JSON.stringify(response.data.options)
         }
-      }
-    );
+      });
+    }
   });
 
   return {
