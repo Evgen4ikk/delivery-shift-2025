@@ -26,7 +26,7 @@ const ORDER_STEPS: Record<number, (props: useOrderPageProps) => React.ReactNode>
 };
 
 export const OrderPage = () => {
-  const { state, functions } = useOrderPage();
+  const { state, functions, form } = useOrderPage();
 
   return (
     <Stack mt={48} mx={240}>
@@ -41,7 +41,7 @@ export const OrderPage = () => {
           color='var(--indicator-positive)'
         />
       </Stack>
-      {ORDER_STEPS[state.step] && ORDER_STEPS[state.step]({ functions, state })}
+      {ORDER_STEPS[state.step] && ORDER_STEPS[state.step]({ functions, state, form })}
     </Stack>
   );
 };

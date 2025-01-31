@@ -5,18 +5,16 @@ import { formatPhoneNumber } from '@/shared/utils';
 
 import type { useOrderPageProps } from '../../types';
 
-export const UserOrderForm = ({ ...props }: useOrderPageProps) => {
-  const { state, functions } = props;
-
+export const UserOrderForm = ({ form, functions }: useOrderPageProps) => {
   const {
     formState: { errors },
     register,
     setValue,
     getValues
-  } = state.forms.userOrderForm;
+  } = form.state.userOrderForm;
 
   return (
-    <Stack gap={24} maw={468} component='form' onSubmit={functions.forms.onSubmitUserOrder}>
+    <Stack gap={24} maw={468} component='form' onSubmit={form.functions.onSubmitUserOrder}>
       <TextInput
         label='Фамилия'
         error={errors.lastname && <>{errors.lastname?.message}</>}

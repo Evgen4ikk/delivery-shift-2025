@@ -24,7 +24,7 @@ export const useIndexPage = () => {
   const getPointsQuery = useGetPointsQuery();
   const getPackagesQuery = useGetPackagesQuery();
   const calcDeliveryMutation = useCalcDeliveryMutation();
-  const { orderFunctions } = useOrder();
+  const order = useOrder();
 
   const points = getPointsQuery.data ? getPointsQuery.data.data.points : [];
   const packages = getPackagesQuery.data ? getPackagesQuery.data.data.packages : [];
@@ -57,8 +57,8 @@ export const useIndexPage = () => {
       return;
     }
 
-    orderFunctions.setSenderPoint(senderPoint);
-    orderFunctions.setReceiverPoint(receiverPoint);
+    order.orderFunctions.setSenderPoint(senderPoint);
+    order.orderFunctions.setReceiverPoint(receiverPoint);
 
     const params = {
       senderPoint,
@@ -66,18 +66,18 @@ export const useIndexPage = () => {
       package: data.package
     };
 
-    const response = await calcDeliveryMutation.mutateAsync({
+    const calcDeliveryMutationResponse = await calcDeliveryMutation.mutateAsync({
       params
     });
 
-    if (response.data.options) {
-      navigate({
-        to: '/order',
-        search: {
-          options: JSON.stringify(response.data.options)
-        }
-      });
-    }
+    if (!calcDeliveryMutationResponse.data.success) return;
+
+    navigate({
+      to: '/order',
+      search: {
+        options: JSON.stringify(calcDeliveryMutationResponse.data.options)
+      }
+    });
   });
 
   return {

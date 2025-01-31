@@ -7,9 +7,7 @@ import type { useOrderPageProps } from '../../types';
 
 import styles from './SendingMethod.module.css';
 
-export const SendingMethod = ({ ...props }: useOrderPageProps) => {
-  const { functions, state } = props;
-
+export const SendingMethod = ({ functions, state }: useOrderPageProps) => {
   return (
     <Stack gap={24} maw={468}>
       {state.options.map((option, index) => {

@@ -2,9 +2,7 @@ import { Button, Checkbox, Flex, Stack } from '@mantine/core';
 
 import type { useOrderPageProps } from '../../types';
 
-export const PayOrder = ({ ...props }: useOrderPageProps) => {
-  const { functions, state } = props;
-
+export const PayOrder = ({ functions, state }: useOrderPageProps) => {
   return (
     <Stack gap={24} maw={468}>
       <Checkbox

@@ -3,16 +3,14 @@ import { IconHelpCircleFilled, IconX } from '@tabler/icons-react';
 
 import type { useOrderPageProps } from '../../types';
 
-export const AddressOrderForm = ({ ...props }: useOrderPageProps) => {
-  const { functions, state } = props;
-
+export const AddressOrderForm = ({ form, functions, state }: useOrderPageProps) => {
   const {
     formState: { errors },
     register
-  } = state.forms.addressOrderForm;
+  } = form.state.addressOrderForm;
 
   return (
-    <Stack gap={24} maw={468} component='form' onSubmit={functions.forms.onSubmitAddressOrder}>
+    <Stack gap={24} maw={468} component='form' onSubmit={form.functions.onSubmitAddressOrder}>
       <TextInput
         label='Улица'
         placeholder='Улица'

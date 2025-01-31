@@ -10,9 +10,7 @@ interface OrderSection {
   title: string;
 }
 
-export const CheckOrder = ({ ...props }: useOrderPageProps) => {
-  const { state, functions } = props;
-
+export const CheckOrder = ({ functions, state }: useOrderPageProps) => {
   const orderData: OrderSection[] = [
     state.orderState.receiver && {
       title: 'Получатель',

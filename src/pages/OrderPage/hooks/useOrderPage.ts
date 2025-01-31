@@ -81,9 +81,8 @@ export const useOrderPage = () => {
       !orderState.senderAddress ||
       !orderState.receiverPoint ||
       !orderState.senderPoint
-    ) {
+    )
       return;
-    }
 
     await createOrderMutation.mutateAsync({
       params: {
@@ -103,18 +102,20 @@ export const useOrderPage = () => {
     state: {
       options: parsedOptions,
       orderState,
-      step,
-      forms: {
-        userOrderForm,
-        addressOrderForm
-      }
+      step
     },
     functions: {
       nextStep,
       prevStep,
       orderFunctions,
-      createOrder,
-      forms: {
+      createOrder
+    },
+    form: {
+      state: {
+        userOrderForm,
+        addressOrderForm
+      },
+      functions: {
         onSubmitUserOrder: userOrderForm.handleSubmit(onSubmit),
         onSubmitAddressOrder: addressOrderForm.handleSubmit(onSubmit)
       }
