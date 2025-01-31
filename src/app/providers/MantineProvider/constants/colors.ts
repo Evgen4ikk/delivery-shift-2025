@@ -1,3 +1,3 @@
-import type { MantineThemeColors } from '@mantine/core'
+import type { MantineThemeColors } from '@mantine/core';
 
-export const colors: Partial<MantineThemeColors> = {}
+export const colors: Partial<MantineThemeColors> = {};
